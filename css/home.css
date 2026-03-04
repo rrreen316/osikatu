@@ -1,0 +1,166 @@
+/* ========================================
+   ホーム画面スタイル
+   ======================================== */
+
+#home-page .page-header {
+    background: linear-gradient(135deg, #7c3aed, #ec4899);
+}
+
+#home-page .section {
+    background-color: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+#home-page .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+    cursor: pointer;
+}
+
+#home-page .section-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--foreground);
+}
+
+#home-page .toggle-icon {
+    transition: transform 0.3s ease;
+}
+
+#home-page .proposal-card {
+    background-color: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+    transition: all 0.2s ease;
+}
+
+#home-page .proposal-card:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-color: #7c3aed;
+}
+
+#home-page .proposal-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--foreground);
+    margin-bottom: 4px;
+}
+
+#home-page .proposal-description {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 12px;
+}
+
+#home-page .proposal-actions {
+    display: flex;
+    gap: 8px;
+}
+
+#home-page .proposal-actions .btn {
+    flex: 1;
+    padding: 8px 12px;
+    font-size: 12px;
+}
+
+#home-page .goods-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#home-page .goods-group {
+    background-color: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+}
+
+#home-page .goods-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+#home-page .goods-group-header span:first-child {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--foreground);
+}
+
+#home-page .goods-group-count {
+    background-color: #22c55e;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+#home-page .goods-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+#home-page .goods-tag {
+    background-color: #e0e7ff;
+    color: #4f46e5;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+#home-page .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: var(--surface);
+    border-radius: 12px;
+    color: var(--muted);
+}
+
+#home-page .empty-state p {
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+    #home-page .section {
+        padding: 12px;
+    }
+
+    #home-page .proposal-card {
+        padding: 10px;
+    }
+
+    #home-page .goods-group {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    #home-page .page-header h2 {
+        font-size: 24px;
+    }
+
+    #home-page .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #home-page .proposal-actions {
+        flex-direction: column;
+    }
+}
