@@ -45,28 +45,25 @@ function renderPostPage() {
         <div class="form-group">
           <label>寸法（任意）</label>
           <div class="dimension-inputs">
-            <div class="dimension-group"><label>幅 (箱ティッシュ何個分)</label>
-              <select id="post-width"><option value="">選択</option>${opts.map(o=>`<option value="${o}">${o}個</option>`).join('')}</select></div>
-            <div class="dimension-group"><label>奥行き (箱ティッシュ何個分)</label>
-              <select id="post-depth"><option value="">選択</option>${opts.map(o=>`<option value="${o}">${o}個</option>`).join('')}</select></div>
-            <div class="dimension-group"><label>高さ (ペットボトル何個分)</label>
-              <select id="post-height"><option value="">選択</option>${opts.map(o=>`<option value="${o}">${o}個</option>`).join('')}</select></div>
+            <div class="dimension-group"><label>幅（1個 ≈ 約25cm）</label>
+              <select id="post-width"><option value="">選択</option>${opts.map(o=>`<option value="${o}">${o}個（約${o*25}cm）</option>`).join('')}</select></div>
+            <div class="dimension-group"><label>奥行き（1個 ≈ 約10cm）</label>
+              <select id="post-depth"><option value="">選択</option>${opts.map(o=>`<option value="${o}">${o}個（約${o*10}cm）</option>`).join('')}</select></div>
+            <div class="dimension-group"><label>高さ（1個 ≈ 約20cm）</label>
+              <select id="post-height"><option value="">選択</option>${opts.map(o=>`<option value="${o}">${o}個（約${o*20}cm）</option>`).join('')}</select></div>
           </div>
         </div>
         <button type="button" class="btn btn-primary btn-block" id="post-submit-btn" style="margin-top:8px;">投稿する</button>
       </div>
     </div>`;
 
-  // 写真ボタン
   const input = document.getElementById('post-photo-input');
   document.getElementById('post-camera-btn').addEventListener('click', () => {
-    input.setAttribute('capture', 'environment');
-    input.setAttribute('accept', 'image/*');
+    input.setAttribute('capture', 'environment'); input.setAttribute('accept', 'image/*');
     setTimeout(() => input.click(), 50);
   });
   document.getElementById('post-library-btn').addEventListener('click', () => {
-    input.removeAttribute('capture');
-    input.setAttribute('accept', 'image/*');
+    input.removeAttribute('capture'); input.setAttribute('accept', 'image/*');
     setTimeout(() => input.click(), 50);
   });
   document.getElementById('post-remove-photo').addEventListener('click', () => {
@@ -87,11 +84,9 @@ function renderPostPage() {
     reader.readAsDataURL(file);
   });
 
-  // 道具追加
   document.getElementById('add-tool-btn').addEventListener('click', () => addTool());
 
-  // 投稿ボタン
-  document.getElementById('post-submit-btn').addEventListener('click', () => {
+  document.getElementById('post-submit-btn').addEventListener('click', async () => {
     const title = document.getElementById('post-title').value.trim();
     const goods = document.getElementById('post-goods').value.trim();
     if (!title || !goods) { showAlert('タイトルと使用したグッズは必須です'); return; }
@@ -101,18 +96,25 @@ function renderPostPage() {
       const s = row.querySelector('.tool-store')?.value?.trim();
       if (n) tools.push({ name: n, store: s || '' });
     });
-    DB.saveGalleryPost({
-      title, description: goods, goods, tools,
-      dimensions: {
-        width:  document.getElementById('post-width').value  ? parseFloat(document.getElementById('post-width').value)  : null,
-        depth:  document.getElementById('post-depth').value  ? parseFloat(document.getElementById('post-depth').value)  : null,
-        height: document.getElementById('post-height').value ? parseFloat(document.getElementById('post-height').value) : null,
-      },
-      imageUri: postPhotoData || null
-    });
-    showToast('投稿しました！');
-    postPhotoData = null;
-    navigation.switchPage('gallery');
+    const btn = document.getElementById('post-submit-btn');
+    btn.disabled = true; btn.textContent = '投稿中...';
+    try {
+      await DB.saveGalleryPost({
+        title, description: goods, goods, tools,
+        dimensions: {
+          width:  document.getElementById('post-width').value  ? parseFloat(document.getElementById('post-width').value)  : null,
+          depth:  document.getElementById('post-depth').value  ? parseFloat(document.getElementById('post-depth').value)  : null,
+          height: document.getElementById('post-height').value ? parseFloat(document.getElementById('post-height').value) : null,
+        },
+        imageUri: postPhotoData || null,
+      });
+      showToast('投稿しました！');
+      postPhotoData = null;
+      navigation.switchPage('gallery');
+    } catch(e) {
+      showAlert('投稿に失敗しました。通信状況を確認してください。');
+      btn.disabled = false; btn.textContent = '投稿する';
+    }
   });
 }
 

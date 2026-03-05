@@ -1,7 +1,12 @@
-function renderHomePage() {
+async function renderHomePage() {
   const page = document.getElementById('home-page');
-  const saved = DB.getSavedProposals();
-  const groups = DB.getGroups();
+  page.innerHTML = '<div style="text-align:center;padding:40px;color:#687076;">読み込み中...</div>';
+
+  const [saved, allGoods] = await Promise.all([
+    DB.getSavedProposals(),
+    DB.getAllGoods(),
+  ]);
+  const groups = DB.getGroups_fromList(allGoods);
 
   page.innerHTML = `
     <div class="page-header"><h2>ホーム</h2><p>あなたのグッズを素敵に飾ろう</p></div>
@@ -29,14 +34,24 @@ function renderHomePage() {
         ${groups.length === 0
           ? `<div class="empty-state"><p>グッズがまだ登録されていません</p>
              <button class="btn btn-primary" data-page="register">グッズを登録</button></div>`
-          : `<div class="goods-summary">${groups.map(g => `
+          : `<div class="goods-summary">${groups.map(g => {
+              const withPhoto = g.items.filter(item => item.imageUri);
+              return `
               <div class="goods-group">
                 <div class="goods-group-header">
                   <span style="font-weight:700;">${g.name}</span>
                   <span class="goods-group-count">計${g.count}個</span>
                 </div>
+                ${withPhoto.length > 0 ? `
+                <div style="display:flex;gap:6px;margin-bottom:8px;overflow-x:auto;">
+                  ${withPhoto.slice(0, 3).map(item => `
+                    <img src="${item.imageUri}" alt="${item.genre}"
+                      style="width:64px;height:64px;object-fit:cover;border-radius:8px;flex-shrink:0;border:1px solid var(--border);">
+                  `).join('')}
+                </div>` : ''}
                 <div class="goods-tags">${g.genres.map(ge => `<span class="goods-tag">${ge}</span>`).join('')}</div>
-              </div>`).join('')}</div>`
+              </div>`;
+            }).join('')}</div>`
         }
       </section>
     </div>`;
@@ -62,17 +77,17 @@ function proposalCard(p) {
   </div>`;
 }
 
-function proposalAdopt(key) {
+async function proposalAdopt(key) {
   const p = _cache.get(key); if (!p) return;
-  const saved = DB.saveProposal({...p, isAdopted: true});
+  const saved = await DB.saveProposal({...p, isAdopted: true});
   _cache.set(key, saved);
   showToast('採用しました🎉');
   renderCurrentProposalPage();
 }
 
-function proposalUnadopt(key) {
+async function proposalUnadopt(key) {
   const p = _cache.get(key); if (!p) return;
-  const saved = DB.saveProposal({...p, isAdopted: false});
+  const saved = await DB.saveProposal({...p, isAdopted: false});
   _cache.set(key, saved);
   showToast('採用を解除しました');
   renderCurrentProposalPage();
@@ -92,10 +107,10 @@ function proposalView(key) {
     </div>`, p.title);
 }
 
-function proposalRemove(key) {
+async function proposalRemove(key) {
   const p = _cache.get(key); if (!p) return;
   if (!confirm('この提案を削除しますか？')) return;
-  DB.deleteProposal(p.id);
+  await DB.deleteProposal(p.id);
   showToast('削除しました');
   renderCurrentProposalPage();
 }

@@ -2,7 +2,6 @@ class Navigation {
   constructor() {
     this.currentPage = 'home';
 
-    // ナビボタン
     document.querySelectorAll('.nav-btn').forEach(btn => {
       btn.addEventListener('click', e => {
         e.preventDefault();
@@ -10,11 +9,9 @@ class Navigation {
       });
     });
 
-    // ホームボタン
     const hb = document.getElementById('home-button');
     if (hb) hb.addEventListener('click', () => this.switchPage('home'));
 
-    // data-page リンク（イベント委譲）
     document.addEventListener('click', e => {
       const t = e.target.closest('[data-page]');
       if (!t || t.classList.contains('nav-btn')) return;
