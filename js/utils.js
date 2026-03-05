@@ -1,13 +1,13 @@
 function showToast(msg, ms = 3000) {
   const t = document.createElement('div');
-  t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:12px 20px;border-radius:10px;z-index:3000;font-size:14px;font-weight:600;max-width:80vw;text-align:center;';
+  t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:12px 20px;border-radius:10px;z-index:3000;font-size:14px;font-weight:600;max-width:80vw;text-align:center;pointer-events:none;';
   t.textContent = msg;
   document.body.appendChild(t);
   setTimeout(() => t.remove(), ms);
 }
 
 function showAlert(msg) {
-  showModal(`<p style="margin-bottom:16px;">${msg}</p><button class="btn btn-primary btn-block" onclick="closeModal()">OK</button>`, 'お知らせ');
+  showModal(`<p style="margin-bottom:16px;">${msg}</p><button class="btn btn-primary btn-block" data-action="close-modal">OK</button>`, 'お知らせ');
 }
 
 function showModal(content, title = '') {
@@ -16,7 +16,7 @@ function showModal(content, title = '') {
   m.innerHTML = `<div class="modal-content">
     ${title ? `<h3 class="modal-title">${title}</h3>` : ''}
     <div class="modal-body">${content}</div>
-    <button class="modal-close" onclick="closeModal()">✕</button>
+    <button class="modal-close" data-action="close-modal">✕</button>
   </div>`;
   o.style.display = 'block';
   m.style.display = 'block';
@@ -45,3 +45,32 @@ function generateDimensionOptions() {
   for (let i = 0.5; i <= 10; i += 0.5) o.push(i);
   return o;
 }
+
+// ========== グローバルイベント委譲 ==========
+// iOSでinnerHTML内のonclickが動かない問題を解決
+// data-action属性でボタンの種類を識別する
+document.addEventListener('click', function(e) {
+  const btn = e.target.closest('[data-action]');
+  if (!btn) return;
+  e.preventDefault();
+  e.stopPropagation();
+
+  const action = btn.dataset.action;
+  const key    = btn.dataset.key || '';
+
+  switch(action) {
+    case 'close-modal':      closeModal(); break;
+    case 'gallery-open':     galleryOpen(key); break;
+    case 'gallery-save':     gallerySave(key); break;
+    case 'gallery-adopt':    galleryAdopt(key); break;
+    case 'proposal-adopt':   proposalAdopt(key); break;
+    case 'proposal-unadopt': proposalUnadopt(key); break;
+    case 'proposal-view':    proposalView(key); break;
+    case 'proposal-remove':  proposalRemove(key); break;
+    case 'goods-detail':     openGoodsDetail(key); break;
+    case 'goods-delete':     deleteGoods(key); break;
+    case 'goods-edit':       closeModal(); editGoods(key); break;
+    case 'add-tool':         addTool(); break;
+    case 'remove-tool':      removeTool(btn); break;
+  }
+});

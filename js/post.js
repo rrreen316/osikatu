@@ -1,11 +1,14 @@
 let postPhotoData = null;
+
 function renderPostPage() {
   const page = document.getElementById('post-page');
   const opts = generateDimensionOptions();
+  postPhotoData = null;
+
   page.innerHTML = `
     <div class="page-header"><h2>飾り方を投稿</h2></div>
     <div class="page-content">
-      <form id="post-form" class="form">
+      <div class="form">
         <div class="form-group">
           <label>写真（任意）</label>
           <div class="photo-upload">
@@ -22,11 +25,11 @@ function renderPostPage() {
         </div>
         <div class="form-group">
           <label for="post-title">タイトル *</label>
-          <input type="text" id="post-title" placeholder="例: デスク上の飾り方" required>
+          <input type="text" id="post-title" placeholder="例: デスク上の飾り方">
         </div>
         <div class="form-group">
           <label for="post-goods">使用したグッズ *</label>
-          <input type="text" id="post-goods" placeholder="例: アクスタ、ぬいぐるみ" required>
+          <input type="text" id="post-goods" placeholder="例: アクスタ、ぬいぐるみ">
         </div>
         <div class="form-group">
           <label>使用した道具（任意）</label>
@@ -34,7 +37,7 @@ function renderPostPage() {
             <div class="tool-input">
               <input type="text" class="tool-name" placeholder="道具の名前">
               <input type="text" class="tool-store" placeholder="購入した店">
-              <button type="button" class="btn btn-secondary" onclick="removeTool(this)">削除</button>
+              <button type="button" class="btn btn-secondary" data-action="remove-tool">削除</button>
             </div>
           </div>
           <button type="button" class="btn btn-secondary" id="add-tool-btn" style="margin-top:8px;">➕ 道具を追加</button>
@@ -50,19 +53,28 @@ function renderPostPage() {
               <select id="post-height"><option value="">選択</option>${opts.map(o=>`<option value="${o}">${o}個</option>`).join('')}</select></div>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-block" style="margin-top:8px;">投稿する</button>
-      </form>
+        <button type="button" class="btn btn-primary btn-block" id="post-submit-btn" style="margin-top:8px;">投稿する</button>
+      </div>
     </div>`;
 
+  // 写真ボタン
   const input = document.getElementById('post-photo-input');
-  document.getElementById('post-camera-btn').onclick = e => { e.preventDefault(); input.setAttribute('capture','environment'); input.click(); };
-  document.getElementById('post-library-btn').onclick = e => { e.preventDefault(); input.removeAttribute('capture'); input.click(); };
-  document.getElementById('post-remove-photo').onclick = e => {
-    e.preventDefault(); postPhotoData = null;
+  document.getElementById('post-camera-btn').addEventListener('click', () => {
+    input.setAttribute('capture', 'environment');
+    input.setAttribute('accept', 'image/*');
+    setTimeout(() => input.click(), 50);
+  });
+  document.getElementById('post-library-btn').addEventListener('click', () => {
+    input.removeAttribute('capture');
+    input.setAttribute('accept', 'image/*');
+    setTimeout(() => input.click(), 50);
+  });
+  document.getElementById('post-remove-photo').addEventListener('click', () => {
+    postPhotoData = null;
     document.getElementById('post-photo-preview').style.display = 'none';
     document.getElementById('post-photo-buttons').style.display = 'flex';
     input.value = '';
-  };
+  });
   input.addEventListener('change', e => {
     const file = e.target.files[0]; if (!file) return;
     const reader = new FileReader();
@@ -74,21 +86,24 @@ function renderPostPage() {
     };
     reader.readAsDataURL(file);
   });
-  document.getElementById('add-tool-btn').onclick = e => { e.preventDefault(); addTool(); };
-  document.getElementById('post-form').addEventListener('submit', e => {
-    e.preventDefault();
+
+  // 道具追加
+  document.getElementById('add-tool-btn').addEventListener('click', () => addTool());
+
+  // 投稿ボタン
+  document.getElementById('post-submit-btn').addEventListener('click', () => {
     const title = document.getElementById('post-title').value.trim();
     const goods = document.getElementById('post-goods').value.trim();
     if (!title || !goods) { showAlert('タイトルと使用したグッズは必須です'); return; }
     const tools = [];
-    document.querySelectorAll('.tool-input').forEach(row => {
+    document.querySelectorAll('#post-tools-container .tool-input').forEach(row => {
       const n = row.querySelector('.tool-name')?.value?.trim();
       const s = row.querySelector('.tool-store')?.value?.trim();
-      if (n) tools.push({name:n, store:s||''});
+      if (n) tools.push({ name: n, store: s || '' });
     });
     DB.saveGalleryPost({
-      title, description:goods, goods, tools,
-      dimensions:{
+      title, description: goods, goods, tools,
+      dimensions: {
         width:  document.getElementById('post-width').value  ? parseFloat(document.getElementById('post-width').value)  : null,
         depth:  document.getElementById('post-depth').value  ? parseFloat(document.getElementById('post-depth').value)  : null,
         height: document.getElementById('post-height').value ? parseFloat(document.getElementById('post-height').value) : null,
@@ -97,16 +112,20 @@ function renderPostPage() {
     });
     showToast('投稿しました！');
     postPhotoData = null;
-    document.getElementById('post-photo-preview').style.display = 'none';
-    document.getElementById('post-photo-buttons').style.display = 'flex';
-    document.getElementById('post-form').reset();
     navigation.switchPage('gallery');
   });
 }
+
 function addTool() {
   const c = document.getElementById('post-tools-container');
-  const d = document.createElement('div'); d.className='tool-input';
-  d.innerHTML=`<input type="text" class="tool-name" placeholder="道具の名前"><input type="text" class="tool-store" placeholder="購入した店"><button type="button" class="btn btn-secondary" onclick="removeTool(this)">削除</button>`;
+  const d = document.createElement('div');
+  d.className = 'tool-input';
+  d.innerHTML = `<input type="text" class="tool-name" placeholder="道具の名前">
+    <input type="text" class="tool-store" placeholder="購入した店">
+    <button type="button" class="btn btn-secondary" data-action="remove-tool">削除</button>`;
   c.appendChild(d);
 }
-function removeTool(btn) { btn.parentElement.remove(); }
+
+function removeTool(btn) {
+  btn.closest('.tool-input').remove();
+}
