@@ -64,6 +64,10 @@ function galleryOpen(key) {
       <div style="display:flex;flex-direction:column;gap:8px;margin-top:6px;">
         <button class="btn btn-primary btn-block" data-action="gallery-save" data-key="${k2}">💾 保存する</button>
         <button class="btn btn-secondary btn-block" data-action="gallery-adopt" data-key="${k2}">✅ 飾り方を採用する</button>
+        ${p.deviceId === localStorage.getItem('oshi_device_id')
+          ? `<button class="btn btn-secondary btn-block" data-action="gallery-delete" data-key="${k2}"
+               style="color:#ef4444;border-color:#ef4444;">🗑️ この投稿を削除する</button>`
+          : ''}
       </div>
       <div style="border-top:1px solid #e5e7eb;padding-top:14px;margin-top:2px;">
         <p style="font-size:12px;color:#687076;font-weight:600;margin-bottom:8px;">📢 この飾り方をシェア</p>
@@ -92,6 +96,19 @@ async function galleryAdopt(key) {
   showToast('飾り方を採用しました🎉');
   closeModal();
   navigation.switchPage('home');
+}
+
+async function galleryDelete(key) {
+  const p = _cache.get(key); if (!p) return;
+  if (!confirm('この投稿を削除しますか？\n削除すると元に戻せません。')) return;
+  try {
+    await DB.deleteGalleryPost(p.id);
+    showToast('投稿を削除しました');
+    closeModal();
+    renderGalleryPage();
+  } catch(e) {
+    showAlert('削除に失敗しました。通信状況を確認してください。');
+  }
 }
 
 function buildShareText(p) {

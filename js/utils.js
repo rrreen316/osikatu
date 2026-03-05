@@ -72,6 +72,7 @@ document.addEventListener('click', function(e) {
     case 'goods-edit':       closeModal(); editGoods(key); break;
     case 'add-tool':         addTool(); break;
     case 'remove-tool':      removeTool(btn); break;
+    case 'gallery-delete':   galleryDelete(key); break;
     case 'share-x':          shareX(key); break;
     case 'share-line':       shareLine(key); break;
     case 'share-instagram':  shareInstagram(key); break;

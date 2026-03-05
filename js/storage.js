@@ -117,6 +117,7 @@ class Storage {
     const record = toDb({
       ...post,
       id:        post.id || generateId(),
+      deviceId:  post.deviceId || getDeviceId(),
       updatedAt: new Date().toISOString(),
       createdAt: post.createdAt || new Date().toISOString(),
     });
@@ -134,7 +135,8 @@ class Storage {
   }
 
   async deleteGalleryPost(id) {
-    await sbFetch(`gallery_posts?id=eq.${encodeURIComponent(id)}`, { method: 'DELETE' });
+    const deviceId = getDeviceId();
+    await sbFetch(`gallery_posts?id=eq.${encodeURIComponent(id)}&device_id=eq.${encodeURIComponent(deviceId)}`, { method: 'DELETE' });
   }
 
   /* ---- Proposals（自分の端末のみ） ---- */
