@@ -1,0 +1,117 @@
+/* ========================================
+   所持グッズ画面スタイル
+   ======================================== */
+
+#my-goods-page .page-header {
+    background: linear-gradient(135deg, #7c3aed, #ec4899);
+}
+
+#my-goods-page .goods-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#my-goods-page .goods-card {
+    background-color: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#my-goods-page .goods-card:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-color: #7c3aed;
+    transform: translateY(-2px);
+}
+
+#my-goods-page .goods-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+#my-goods-page .goods-card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--foreground);
+}
+
+#my-goods-page .goods-card-info {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+}
+
+#my-goods-page .goods-card-genre {
+    background-color: #7c3aed;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+#my-goods-page .goods-card-memo {
+    background-color: #fef3c7;
+    border-left: 3px solid #f59e0b;
+    padding: 8px;
+    border-radius: 4px;
+    margin-top: 8px;
+}
+
+#my-goods-page .goods-card-memo p {
+    font-size: 13px;
+    color: #92400e;
+    margin: 0;
+}
+
+#my-goods-page .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: var(--surface);
+    border-radius: 12px;
+    color: var(--muted);
+}
+
+#my-goods-page .empty-state p {
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+
+#my-goods-page .empty-state .btn {
+    margin-top: 16px;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+    #my-goods-page .goods-card {
+        padding: 10px;
+    }
+
+    #my-goods-page .goods-card-header {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    #my-goods-page .page-header h2 {
+        font-size: 24px;
+    }
+
+    #my-goods-page .goods-card {
+        padding: 8px;
+    }
+
+    #my-goods-page .goods-card-title {
+        font-size: 14px;
+    }
+
+    #my-goods-page .goods-card-info {
+        font-size: 11px;
+    }
+}

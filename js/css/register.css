@@ -1,0 +1,211 @@
+/* ========================================
+   グッズ登録画面スタイル
+   ======================================== */
+
+#register-page .page-header {
+    background: linear-gradient(135deg, #7c3aed, #ec4899);
+}
+
+#register-page .register-tabs {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+    background-color: white;
+    padding: 0;
+    border-radius: 8px 8px 0 0;
+}
+
+#register-page .tab-btn {
+    padding: 16px 0;
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: var(--muted);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+}
+
+#register-page .tab-btn:hover {
+    color: var(--foreground);
+}
+
+#register-page .tab-btn.active {
+    color: #7c3aed;
+    border-bottom-color: #7c3aed;
+}
+
+#register-page .tab-content {
+    display: none;
+    background-color: white;
+    border: 1px solid var(--border);
+    border-radius: 0 0 8px 8px;
+    padding: 24px;
+}
+
+#register-page .tab-content.active {
+    display: block;
+}
+
+#register-page .form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+#register-page .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#register-page .form-group label {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--foreground);
+}
+
+#register-page .form-group input,
+#register-page .form-group textarea,
+#register-page .form-group select {
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+}
+
+#register-page .form-group input:focus,
+#register-page .form-group textarea:focus,
+#register-page .form-group select:focus {
+    outline: none;
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+#register-page .form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+#register-page .dimension-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+}
+
+#register-page .dimension-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#register-page .dimension-group label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+#register-page .dimension-group select {
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+#register-page .photo-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+#register-page .photo-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+}
+
+#register-page .photo-preview img {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#register-page .photo-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#register-page .photo-buttons .btn {
+    flex: 1;
+    min-width: 150px;
+}
+
+#register-page .btn-primary {
+    background-color: #7c3aed;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+#register-page .btn-primary:hover {
+    background-color: #6d28d9;
+}
+
+#register-page .btn-primary:active {
+    transform: scale(0.97);
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+    #register-page .tab-content {
+        padding: 16px;
+    }
+
+    #register-page .dimension-inputs {
+        grid-template-columns: 1fr;
+    }
+
+    #register-page .photo-buttons {
+        flex-direction: column;
+    }
+
+    #register-page .photo-buttons .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    #register-page .register-tabs {
+        gap: 8px;
+    }
+
+    #register-page .tab-btn {
+        font-size: 12px;
+        padding: 12px 0;
+    }
+
+    #register-page .tab-content {
+        padding: 12px;
+    }
+
+    #register-page .form-group input,
+    #register-page .form-group textarea,
+    #register-page .form-group select {
+        padding: 10px;
+    }
+}

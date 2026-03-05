@@ -1,0 +1,302 @@
+/* ========================================
+   フォームコンポーネント
+   ======================================== */
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--foreground);
+    display: block;
+}
+
+.form-group label.required::after {
+    content: ' *';
+    color: #ef4444;
+}
+
+/* テキスト入力 */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group input[type="time"],
+.form-group textarea,
+.form-group select {
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background-color: white;
+    color: var(--foreground);
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="password"]:focus,
+.form-group input[type="number"]:focus,
+.form-group input[type="date"]:focus,
+.form-group input[type="time"]:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--muted);
+}
+
+/* テキストエリア */
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+    font-family: inherit;
+    line-height: 1.5;
+}
+
+.form-group textarea.small {
+    min-height: 60px;
+}
+
+.form-group textarea.large {
+    min-height: 150px;
+}
+
+/* セレクト */
+.form-group select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23687076' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+}
+
+.form-group select option {
+    padding: 8px;
+}
+
+/* チェックボックス */
+.form-group input[type="checkbox"],
+.form-group input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: #7c3aed;
+}
+
+.form-group .checkbox-group,
+.form-group .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group .checkbox-item,
+.form-group .radio-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.form-group .checkbox-item input,
+.form-group .radio-item input {
+    margin: 0;
+}
+
+.form-group .checkbox-item label,
+.form-group .radio-item label {
+    margin: 0;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+/* エラー状態 */
+.form-group.error input,
+.form-group.error textarea,
+.form-group.error select {
+    border-color: #ef4444;
+}
+
+.form-group.error input:focus,
+.form-group.error textarea:focus,
+.form-group.error select:focus {
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-group .error-message {
+    color: #ef4444;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* サクセス状態 */
+.form-group.success input,
+.form-group.success textarea,
+.form-group.success select {
+    border-color: #22c55e;
+}
+
+.form-group.success input:focus,
+.form-group.success textarea:focus,
+.form-group.success select:focus {
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+.form-group .success-message {
+    color: #22c55e;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* ヘルプテキスト */
+.form-group .help-text {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+/* フォームグループ */
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.form-row .form-group {
+    margin-bottom: 0;
+}
+
+/* ディメンション入力 */
+.dimension-inputs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+}
+
+.dimension-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.dimension-group label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 500;
+}
+
+.dimension-group select {
+    padding: 10px;
+}
+
+/* 写真アップロード */
+.photo-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.photo-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+
+.photo-preview img {
+    max-width: 100%;
+    max-height: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.photo-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.photo-buttons .btn {
+    flex: 1;
+    min-width: 150px;
+}
+
+/* ツール入力 */
+.tool-input {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+.tool-input input {
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.tool-input .btn {
+    padding: 10px 12px;
+    font-size: 12px;
+}
+
+/* レスポンシブ */
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .dimension-inputs {
+        grid-template-columns: 1fr;
+    }
+
+    .tool-input {
+        grid-template-columns: 1fr;
+    }
+
+    .photo-buttons {
+        flex-direction: column;
+    }
+
+    .photo-buttons .btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .form-group label {
+        font-size: 13px;
+    }
+
+    .tool-input {
+        grid-template-columns: 1fr;
+    }
+}
